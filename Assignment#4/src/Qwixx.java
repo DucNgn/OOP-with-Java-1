@@ -1,3 +1,10 @@
+/**
+ * @AUTHOR: Duke Ngn
+ * COMP248 -- WINTER 2018
+ * This class handles the game with lock colour, the dices, players and negative points
+ * method play() will start the game
+ */
+
 import java.util.Scanner;
 
 public class Qwixx {
@@ -36,6 +43,7 @@ public class Qwixx {
      * ROLLED ALL DICES AT ONCE
      */
     public void rollDice() {
+        System.out.println("Rolling dices ..... ");
         for (Dice each : this.dices) {
             each.setCurrentSide(each.rollDice());
         }
@@ -45,6 +53,7 @@ public class Qwixx {
      * PRINT RESULT OF ALL ROLLED DICES
      */
     public void printRolledDice() {
+        System.out.println("");
        for(Dice each: dices) {
            System.out.print(each + " | ");
        }
@@ -95,7 +104,8 @@ public class Qwixx {
                 if(valid) {
                                         p.makeMove(request);
                                         checkColourFinished(p, colour); //LOCK THE COLOUR IF THE REQUESTED MOVE LOCKS THAT COLOUR
-                                        p.printGameBoard();
+                    System.out.println("\n---> " + request + " successfully ");
+                    p.printGameBoard();
                 }
                 keyIn.nextLine();
             } else {
@@ -112,10 +122,11 @@ public class Qwixx {
      */
     public void makeRequestColouredMove(Player p) {
 
+        System.out.println("\n PROCESSING \n");
         //ASK USER UNTILL GET A VALID MOVE
         boolean valid = false;
         while(valid == false) {
-            System.out.print("Would you like to cross off a number on the game board using one of the coloured dice and a white dice?" +
+            System.out.print("\nWould you like to cross off a number on the game board using one of the coloured dice and a white dice?" +
                     " (anything other than 'yes' is taken to mean no): ");
             String choice                       = keyIn.nextLine();
 
@@ -139,6 +150,7 @@ public class Qwixx {
                 if(valid) {
                                  p.makeMove(request);
                                  checkColourFinished(p, colour);  //LOCK THE COLOUR IF THE REQUESTED MOVE LOCKS THAT COLOUR
+                                 System.out.println("\n---> " + request + " successfully ");
                                  p.printGameBoard();
                 }
             } else {
@@ -171,7 +183,7 @@ public class Qwixx {
                     return false;
                 }
                 if(m.getNumber() <= p.getlRed()) {
-                    System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
+                    System.out.println("!! Invalid !!. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
                 }
                 break;
@@ -182,7 +194,7 @@ public class Qwixx {
                     return false;
                 }
                 if(m.getNumber() <= p.getlYellow()) {
-                    System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
+                    System.out.println("!! Invalid !!. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
                 }
                 break;
@@ -193,7 +205,7 @@ public class Qwixx {
                     return false;
                 }
                 if(m.getNumber() >= p.getlGreen()) {
-                    System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
+                    System.out.println("!! Invalid !!. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
                 }
                 break;
@@ -204,7 +216,7 @@ public class Qwixx {
                     return false;
                 }
                 if(m.getNumber() >= p.getlBlue()) {
-                    System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
+                    System.out.println("!! Invalid !!. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
                 }
         }
@@ -283,6 +295,7 @@ public class Qwixx {
 
         for(Player each: players) {
             if(each.getNegativePoints() <= -20) {
+                System.out.println("Player " + each.getName() + " has reached maximum allowed penalty points");
                 return true;
             }
         }
@@ -304,10 +317,10 @@ public class Qwixx {
     public void playWhiteDiceMove(Player p) {
 
         //DISPLAY INFORMATION FOR USER
-        System.out.println("***** Move on white dice *****");
+        System.out.println("\n***** Move on white dice *****");
         System.out.println("The total for the white dice is " + getWhiteDiceTotal() + "\n");
 
-        System.out.println(p.getName() + " it's your turn");
+        p.callTurn();
         p.printGameBoard();
         System.out.println("\n");
 
@@ -324,14 +337,13 @@ public class Qwixx {
     public void playColourDiceMoves(Player p) {
 
         //DISPLAY INFORMATION FOR USER
-        System.out.println(p.getName() + " it's your turn...\n");
-        System.out.println("***** Move on any colour dice *****");
+        p.callTurn();
+        System.out.println("\n***** Move on any colour dice *****");
 
         p.printGameBoard();
         System.out.println();
 
         printRolledDice();
-        System.out.println();
 
         //CALLING SUPPORT METHOD
         makeRequestColouredMove(p);
@@ -346,7 +358,14 @@ public class Qwixx {
             for(int i =0; i<players.length; i++) {
 
                 //ANNOUNCE NEW ROUND
-                System.out.println("----------------NEW ROUND------------");
+                System.out.println("\n############----------------NEW ROUND------------###########\n");
+                System.out.println("----------------------------------------------------------------");
+                System.out.println("        ||                                      ||");
+                System.out.println("        ||                                      ||");
+                System.out.println("        ||                                      ||");
+                System.out.println("       \\||/                                    \\||/");
+                System.out.println("        \\/                                      \\/ ");
+                System.out.println("");
 
                 rollDice();
                 printRolledDice();
@@ -363,8 +382,11 @@ public class Qwixx {
                 //THE PLAYER IS IN TURN PLAYS WITH COLOURED DICE
                 playColourDiceMoves(players[i]);
                 if(checkGameFinished()) {
+                    System.out.println("\n-------------------------GAME FINISHED------------------------\n");
                     break;
                 }
+
+                System.out.println("\n############----------------END ROUND------------###########\n");
             } //END OF FOR-LOOP
 
         } //END OF WHILE-LOOP
@@ -379,6 +401,7 @@ public class Qwixx {
      *  DETERMINE THE WINNER
      */
     public void determineWinner() {
+        System.out.println("DISPLAYING TOTAL SCORE: ");
         Player best = players[0]; //DEFAULT CASE
         for(Player each: players) {
             System.out.println(each.getName() + " has a total of: " + each.getBoardTotal() );
@@ -388,4 +411,7 @@ public class Qwixx {
         }
         System.out.println("That's all! " + best.getName() + " wins the game!");
     }
+
+
+    //END OF CLASS
 }

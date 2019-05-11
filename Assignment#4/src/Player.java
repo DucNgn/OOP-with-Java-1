@@ -1,3 +1,10 @@
+/**
+ * @AUTHOR: Duke Ngn
+ * COMP248 -- WINTER 2018
+ * This class keeps track of player's activities
+ * *Including player's gameboard and score, last crossed off move
+ */
+
 public class Player {
 
     String name;
@@ -99,6 +106,17 @@ public class Player {
         }
     }
 
+
+    /**
+     * CALL PLAYER FOR THEIR TURN
+     */
+    public void callTurn() {
+        String nameUpper = this.name.toUpperCase();
+        System.out.println("----------------------------------------------------------------------------------");
+        System.out.println("***************TURN OF PLAYER " + nameUpper + "     |    ");
+        System.out.println("----------------------------------------------------------------------------------");
+    }
+
     /**
      * Add negative points to user's record
      * @param pts
@@ -184,4 +202,7 @@ public class Player {
         total = total - this.negativePoints;
         return total;
     }
+
+
+    //END OF CLASS
 }

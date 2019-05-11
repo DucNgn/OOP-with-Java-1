@@ -1,3 +1,9 @@
+/**
+ * @AUTHOR: Duke Ngn
+ * COMP248 -- WINTER 2018
+ * This class handle requested move. It will make the move on player gameboard
+ */
+
 public class Move {
     char colour;
     int number;
@@ -56,5 +62,13 @@ public class Move {
 
         return result;
     }
+
+    public String toString() {
+        String msg = "move at colour " + this.getColour() + ", number " + this.getNumber();
+        return msg;
+    }
+
+
+    //END OF CLASS
 
 }

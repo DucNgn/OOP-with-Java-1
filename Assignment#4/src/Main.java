@@ -7,6 +7,9 @@ public class Main {
         Scanner keyIn = new Scanner(System.in);
         int playerCtr = 0;
 
+        /**
+         * ASK FOR NUMBER OF PLAYER
+         */
         while (true) {
             System.out.print("Please enter the number of players (2-5): ");
             playerCtr = keyIn.nextInt();
@@ -17,8 +20,11 @@ public class Main {
         }
 
         keyIn.nextLine();
-        Player[] ready = new Player[playerCtr];
 
+        /**
+         * INITIALIZE
+         */
+        Player[] ready = new Player[playerCtr];
         for(int i=0; i<ready.length; i++) {
 
             System.out.print("Please enter the name of player no. " + i + ": ");
@@ -29,8 +35,9 @@ public class Main {
             System.out.println();
         }
 
-
         Qwixx game = new Qwixx(ready);
+
+        //STARTING GAME
         game.play();
         keyIn.close();
 

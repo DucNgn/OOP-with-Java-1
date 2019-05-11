@@ -1,3 +1,9 @@
+/**
+ * @AUTHOR: Duke Ngn
+ * COMP248 - WINTER 2018
+ * This class handles the operation of dices (both colour and white dice)
+ * It will generate randomly the side of the dice when "rollDice"
+ */
 import java.util.Random;
 
 public class Dice {
@@ -53,4 +59,6 @@ public class Dice {
         int randomNum = rand.nextInt((6 - 1) + 1) + 1;
         return randomNum;
     }
+
+    //END OF CLASS
 }
