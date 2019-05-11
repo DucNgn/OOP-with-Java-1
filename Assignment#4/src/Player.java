@@ -9,7 +9,9 @@ public class Player {
      * DEFAULT CONSTRUCTOR
      */
     public Player() {
-        lRed = lYellow = lGreen = lBlue = negativePoints = 0;
+        System.out.println("Hello from default construc player");
+        lRed = lYellow = lGreen = lBlue =0;
+        this.negativePoints = 0;
         initializeGameboard();
     }
 
@@ -18,7 +20,7 @@ public class Player {
      * @param name
      */
     public Player(String name) {
-        this.setName(name);
+        this.name = name;
     }
 
     /**
@@ -77,6 +79,7 @@ public class Player {
      * Initialize gameboard
      */
     public void initializeGameboard() {
+        System.out.println("Initializing keyboard");
         this.gameBoard = new String[4][11];
 
         gameBoard[0][0] = " Red ";
@@ -109,7 +112,6 @@ public class Player {
      */
     public void printGameBoard() {
         System.out.println(this.name + "'s GameBoard");
-        System.out.println("  Red:  ");
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 11; j++) {
                 System.out.print(gameBoard[i][j] + " ");
@@ -120,11 +122,30 @@ public class Player {
 
     /**
      * MAKE MOVE AS REQUESTED
+     * MAKE CHANGE IN LAST MOVE
      * @param m
      */
     public void makeMove(Move m) {
         int moveColour = Move.convertColourtoNum(m.getColour());
         gameBoard[moveColour][m.getNumber()] = "X";
+
+        switch(moveColour) {
+            case 0:
+                this.setlRed(m.getNumber());
+                break;
+
+            case 1:
+                this.setlYellow(m.getNumber());
+                break;
+
+            case 2:
+                this.setlGreen(m.getNumber());
+                break;
+
+            case 3:
+                this.setlBlue(m.getNumber());
+                break;
+        }
     }
 
     /**
@@ -144,7 +165,7 @@ public class Player {
      * Calculate the total points player got
      * @return
      */
-    public int getBoardTotalMethod() {
+    public int getBoardTotal() {
         int total =0;
         for(int i = 0; i<4; i++) {
             int count = 0;

@@ -20,6 +20,7 @@ public class Qwixx {
     public Qwixx(Player[] players) {
         this.players    = players;
         this.dices      = new Dice[6];
+        lockR = lockB = lockG = lockB = false;
     }
 
     /**
@@ -89,6 +90,7 @@ public class Qwixx {
                 if(valid) {
                                         p.makeMove(request);
                                         checkColourFinished(p, colour); //LOCK THE COLOUR IF THE REQUESTED MOVE LOCKS THAT COLOUR
+                                        p.printGameBoard();
                 }
             }
         }
@@ -129,6 +131,7 @@ public class Qwixx {
                 if(valid) {
                                  p.makeMove(request);
                                  checkColourFinished(p, colour);  //LOCK THE COLOUR IF THE REQUESTED MOVE LOCKS THAT COLOUR
+                                 p.printGameBoard();
                 }
             } else {
                 p.addNegativePoints(NEGPTS);
@@ -155,6 +158,10 @@ public class Qwixx {
         int colour = Move.convertColourtoNum(m.getColour());
         switch(colour) {
             case 0:
+                if(lockR) {
+                    System.out.println("Can't move on Red, it's locked");
+                    return false;
+                }
                 if(m.getNumber() <= p.getlRed()) {
                     System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
@@ -162,6 +169,10 @@ public class Qwixx {
                 break;
 
             case 1:
+                if(lockY) {
+                    System.out.println("Can't move on Yellow, it's locked");
+                    return false;
+                }
                 if(m.getNumber() <= p.getlYellow()) {
                     System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
@@ -169,6 +180,10 @@ public class Qwixx {
                 break;
 
             case 2:
+                if(lockG) {
+                    System.out.println("Can't move on Green, it's locked");
+                    return false;
+                }
                 if(m.getNumber() >= p.getlGreen()) {
                     System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
@@ -176,24 +191,21 @@ public class Qwixx {
                 break;
 
             case 3:
+                if(lockB) {
+                    System.out.println("Can't move on Blue, it's locked");
+                    return false;
+                }
                 if(m.getNumber() >= p.getlBlue()) {
                     System.out.println("Invalid. Move " + m.getNumber() + " is already crossed off in " + m.getColour());
                     return false;
                 }
         }
-
-        //CHECK IF COLOUR IS ALREADY LOCKED
-        if(checkColourFinished(p, m.getColour())) {
-            System.out.println("This colour has already been locked");
-            return false;
-        }
+        //VALID
         return true;
     }
 
-    /**  ** ATTETION **
-     * DO BOTH FUNCTION AT ONCE:
-     * + CHECK A COLOUR IF IT HAS BEEN LOCKED
-     * + CHECK TO LOCK COLOUR IF NEEDED
+    /**
+     * CHECK TO LOCK COLOUR IF NEEDED
      * @param p
      * @param colour
      * @return
@@ -204,38 +216,34 @@ public class Qwixx {
         //LOCK COLOUR
         switch(colourDigit) {
             case 0:
-                if(lockR) {
-                    return true;
-                }
                 if(p.getlRed() == 12) {
                     lockR = true;
+                    System.out.println("Red is no longer playable. Player " + p.getName() + " has locked it");
+                    return true;
                 }
                 break;
 
             case 1:
-                if(lockY) {
-                    return true;
-                }
                 if(p.getlYellow() == 12) {
                     lockY = true;
+                    System.out.println("Yellow is no longer playable. Player " + p.getName() + " has locked it");
+                    return true;
                 }
                 break;
 
             case 2:
-                if(lockG) {
-                    return true;
-                }
                 if(p.getlGreen() == 2) {
                     lockG = true;
+                    System.out.println("Green is no longer playable. Player " + p.getName() + " has locked it");
+                    return true;
                 }
                 break;
 
             case 3:
-                if(lockB) {
-                    return true;
-                }
                 if(p.getlBlue() == 2) {
                     lockB = true;
+                    System.out.println("Blue is no longer playable. Player " + p.getName() + " has locked it");
+                    return true;
                 }
                 break;
         }
@@ -321,10 +329,54 @@ public class Qwixx {
         makeRequestColouredMove(p);
     }
 
+    /**
+     * A LOOP METHOD TO PLAY THE GAME TILL FINISH
+     */
     public void play() {
+        while(checkGameFinished() == false ) {
+
+            for(int i =0; i<players.length; i++) {
+
+                //ANNOUNCE NEW ROUND
+                System.out.println("----New Round---");
+                rollDice();
+                printRolledDice();
+
+                //ALL PLAYER PLAY WITH WHITE DICES
+                for(Player each: players) {
+                        playWhiteDiceMove(each);
+
+                        if(checkGameFinished()) { //CHECK IF THE GAME FINISHED
+                                     break;
+                        }
+                }
+
+                //THE PLAYER IS IN TURN PLAYS WITH COLOURED DICE
+                playColourDiceMoves(players[i]);
+                if(checkGameFinished()) {
+                    break;
+                }
+            } //END OF FOR-LOOP
+
+        } //END OF WHILE-LOOP
+
+        //AT THIS POINT, THE GAME HAS BEEN FINISHED
 
 
+    } //END OF METHOD
+
+    /**
+     *  DISPLAY ALL THE SCORE
+     *  DETERMINE THE WINNER
+     */
+    public void determineWinner() {
+        Player best = players[0]; //DEFAULT CASE
+        for(Player each: players) {
+            System.out.println(each.getName() + " has a total of: " + each.getBoardTotal() );
+            if(best.getBoardTotal() <= each.getBoardTotal()) {
+                best = each;
+            }
+        }
+        System.out.println("That's all! " + best.getName() + " wins the game!");
     }
-
-
 }
