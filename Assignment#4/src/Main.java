@@ -16,16 +16,12 @@ public class Main {
             System.out.println("You must have between 2 and 5 players");
         }
 
+        keyIn.nextLine();
         Player[] ready = new Player[playerCtr];
-        for(int i=0; i<playerCtr; i++) {
-            ready[i] = new Player();
-        }
 
-        for(int i=0; i<playerCtr; i++) {
+        for(int i=0; i<ready.length; i++) {
 
-            int ctr                  = i++;
-            System.out.print("Please enter the name of player no. " + ctr + ": ");
-            keyIn.nextLine();
+            System.out.print("Please enter the name of player no. " + i + ": ");
             String pName             = keyIn.nextLine();
 
             ready[i] = new Player(pName);
@@ -33,9 +29,10 @@ public class Main {
             System.out.println();
         }
 
-        keyIn.close();
+
         Qwixx game = new Qwixx(ready);
         game.play();
+        keyIn.close();
 
     }
 }

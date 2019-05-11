@@ -9,8 +9,8 @@ public class Player {
      * DEFAULT CONSTRUCTOR
      */
     public Player() {
-        System.out.println("Hello from default construc player");
-        lRed = lYellow = lGreen = lBlue =0;
+        lRed = lYellow = 0;
+        lGreen = lBlue = 14;
         this.negativePoints = 0;
         initializeGameboard();
     }
@@ -20,6 +20,7 @@ public class Player {
      * @param name
      */
     public Player(String name) {
+        this();
         this.name = name;
     }
 
@@ -79,12 +80,11 @@ public class Player {
      * Initialize gameboard
      */
     public void initializeGameboard() {
-        System.out.println("Initializing keyboard");
-        this.gameBoard = new String[4][11];
+        this.gameBoard = new String[4][12];
 
         gameBoard[0][0] = " Red ";
         gameBoard[1][0] = " Yellow ";
-        for(int i = 1; i<11; i++) {
+        for(int i = 1; i<12; i++) {
             String temp = Integer.toString(i+1);
             gameBoard[0][i] = temp;
             gameBoard[1][i] = temp;
@@ -92,10 +92,10 @@ public class Player {
 
         gameBoard[2][0] = " Green ";
         gameBoard[3][0] = " Blue ";
-        for(int i = 10; i > 0; i--) {
-            String temp = Integer.toString(i+1);
-            gameBoard[2][i] = temp;
-            gameBoard[3][i] = temp;
+        for(int i = 12, j = 1; i >= 2 && j<12; i--, j++) {
+            String temp = Integer.toString(i);
+            gameBoard[2][j] = temp;
+            gameBoard[3][j] = temp;
         }
     }
 
@@ -113,7 +113,7 @@ public class Player {
     public void printGameBoard() {
         System.out.println(this.name + "'s GameBoard");
         for(int i = 0; i < 4; i++) {
-            for(int j = 0; j < 11; j++) {
+            for(int j = 0; j < 12; j++) {
                 System.out.print(gameBoard[i][j] + " ");
             }
             System.out.println("");  //to the other line
@@ -127,22 +127,27 @@ public class Player {
      */
     public void makeMove(Move m) {
         int moveColour = Move.convertColourtoNum(m.getColour());
-        gameBoard[moveColour][m.getNumber()] = "X";
+        int moveNumberRY = m.getNumber() - 1;
+        int moveNumberGB = 13 - m.getNumber();
 
         switch(moveColour) {
             case 0:
+                gameBoard[moveColour][moveNumberRY] = "X";
                 this.setlRed(m.getNumber());
                 break;
 
             case 1:
+                gameBoard[moveColour][moveNumberRY] = "X";
                 this.setlYellow(m.getNumber());
                 break;
 
             case 2:
+                gameBoard[moveColour][moveNumberGB] = "X";
                 this.setlGreen(m.getNumber());
                 break;
 
             case 3:
+                gameBoard[moveColour][moveNumberGB] = "X";
                 this.setlBlue(m.getNumber());
                 break;
         }

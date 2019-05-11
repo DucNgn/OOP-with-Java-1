@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Dice {
 
     String colour;
@@ -38,7 +40,7 @@ public class Dice {
 
     @Override
     public String toString() {
-         String out = "The colour of this dice is " + this.colour + ", the current side is " + this.currentSide;
+         String out = this.colour + " dice: " + this.getCurrentSide();
          return out;
     }
 
@@ -47,7 +49,8 @@ public class Dice {
      * @return
      */
     public int rollDice() {
-        int rand = (int)Math.random() * (6 - 1);
-        return rand;
+        Random rand = new Random();
+        int randomNum = rand.nextInt((6 - 1) + 1) + 1;
+        return randomNum;
     }
 }
