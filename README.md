@@ -9,11 +9,11 @@ Some of IDEs you can use to comply:
 [Eclipse](https://www.eclipse.org/downloads/)
 [IntelliJ](https://www.jetbrains.com/idea/?fromMenu)
 
-#USAGE
+# USAGE
 Import project into your IDEs.
 Run
 
-#CONTENT
+# CONTENT
 Purpose: Design/ Problem analysis skills.
 [ASSIGNMENT #1 ](https://github.com/DukeNgn/COMP248-OOP1/tree/master/Assignment%231)
 * Flow of control statements with if/else, concept of input/output with user
