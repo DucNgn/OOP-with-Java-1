@@ -192,12 +192,15 @@ public class Player {
         int total =0;
         for(int i = 0; i<4; i++) {
             int count = 0;
-            for(int j = 1; j<11; j++) {
+            for(int j = 1; j < 12; j++) {
                 if(gameBoard[i][j].equals("X")) {
                     count++;
                 }
             }
-            total = total + totalOfEachColor(count);
+            if(count>0) {
+                total = total + totalOfEachColor(count);
+            }
+
         }
         total = total - this.negativePoints;
         return total;

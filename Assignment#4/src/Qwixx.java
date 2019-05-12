@@ -87,7 +87,7 @@ public class Qwixx {
 
         //ASK USER UNTILL GET THE VALID MOVE
         boolean valid = false;
-        while (valid == false) {
+        while (!valid) {
             System.out.print("Would you like to cross off a number on the game board using the white dice total?" +
                     " (anything other than 'yes' is taken to mean no): ");
             String choice                         = keyIn.nextLine();
@@ -104,8 +104,8 @@ public class Qwixx {
                 if(valid) {
                                         p.makeMove(request);
                                         checkColourFinished(p, colour); //LOCK THE COLOUR IF THE REQUESTED MOVE LOCKS THAT COLOUR
-                    System.out.println("\n---> " + request + " successfully ");
-                    p.printGameBoard();
+                                        System.out.println("\n---> " + request + " successfully ");
+                                        p.printGameBoard();
                 }
                 keyIn.nextLine();
             } else {
@@ -368,6 +368,7 @@ public class Qwixx {
                 System.out.println("");
 
                 rollDice();
+
                 printRolledDice();
 
                 //ALL PLAYER PLAY WITH WHITE DICES
@@ -375,15 +376,22 @@ public class Qwixx {
                         playWhiteDiceMove(each);
 
                         if(checkGameFinished()) { //CHECK IF THE GAME FINISHED
+                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
                                      break;
                         }
                 }
 
+                if(checkGameFinished()) { //CHECK IF THE GAME FINISHED
+                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
+                                     break;
+                }
+
                 //THE PLAYER IS IN TURN PLAYS WITH COLOURED DICE
                 playColourDiceMoves(players[i]);
+
                 if(checkGameFinished()) {
-                    System.out.println("\n-------------------------GAME FINISHED------------------------\n");
-                    break;
+                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
+                                     break;
                 }
 
                 System.out.println("\n############----------------END ROUND------------###########\n");
