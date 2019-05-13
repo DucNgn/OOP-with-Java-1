@@ -177,8 +177,8 @@ public class Player {
      * @return
      */
     public int totalOfEachColor(int ctr) {
-        if(ctr == 1) {
-            return 1;
+        if(ctr == 0) {
+            return 0;
         } else {
           return ctr + totalOfEachColor(ctr-1);
         }
@@ -197,9 +197,7 @@ public class Player {
                     count++;
                 }
             }
-            if(count>0) {
                 total = total + totalOfEachColor(count);
-            }
 
         }
         total = total - this.negativePoints;

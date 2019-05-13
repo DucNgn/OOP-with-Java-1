@@ -5,10 +5,12 @@
  * method play() will start the game
  */
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Qwixx {
 
+    int bestScore;
     Scanner keyIn;
     Dice[] dices;
     Player[] players;
@@ -26,6 +28,7 @@ public class Qwixx {
      * @param players
      */
     public Qwixx(Player[] players) {
+        this.bestScore = 0;
         this.players    = players;
         keyIn = new Scanner(System.in);
         this.dices      = new Dice[6];
@@ -290,12 +293,14 @@ public class Qwixx {
         }
 
         if(check >= 2) {
+            System.out.println("\n-------------------------GAME FINISHED------------------------\n");
             return true;
         }
 
         for(Player each: players) {
             if(each.getNegativePoints() <= -20) {
                 System.out.println("Player " + each.getName() + " has reached maximum allowed penalty points");
+                System.out.println("\n-------------------------GAME FINISHED------------------------\n");
                 return true;
             }
         }
@@ -353,7 +358,8 @@ public class Qwixx {
      * A LOOP METHOD TO PLAY THE GAME TILL FINISH
      */
     public void play() {
-        while(checkGameFinished() == false ) {
+        boolean done = false;
+        while(done == false ) {
 
             for(int i =0; i<players.length; i++) {
 
@@ -370,28 +376,25 @@ public class Qwixx {
                 rollDice();
 
                 printRolledDice();
-
                 //ALL PLAYER PLAY WITH WHITE DICES
                 for(Player each: players) {
                         playWhiteDiceMove(each);
-
-                        if(checkGameFinished()) { //CHECK IF THE GAME FINISHED
-                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
-                                     break;
+                        done        = checkGameFinished();
+                        if(done)    {
+                            break;
                         }
                 }
 
-                if(checkGameFinished()) { //CHECK IF THE GAME FINISHED
-                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
-                                     break;
+                if(done) {
+                    break;
                 }
 
                 //THE PLAYER IS IN TURN PLAYS WITH COLOURED DICE
                 playColourDiceMoves(players[i]);
+                done = checkGameFinished();
 
-                if(checkGameFinished()) {
-                                     System.out.println("\n-------------------------GAME FINISHED------------------------\n");
-                                     break;
+                if(done) {
+                    break;
                 }
 
                 System.out.println("\n############----------------END ROUND------------###########\n");
@@ -404,20 +407,38 @@ public class Qwixx {
         keyIn.close();
     } //END OF METHOD
 
+    public void makeScoreBoard() {
+
+        //sorting
+        Player compare = players[0];
+        for(int i = 1; i<players.length; i++) {
+            if(players[i].getBoardTotal() > compare.getBoardTotal()) {
+              Player temp = players[i];
+              players[i-1] = players[i];
+              players[i] = temp;
+            } else {
+                compare = players[i];
+            }
+        }
+
+        System.out.println("DISPLAYING TOTAL SCORE IN ORDER");
+        int count = 1;
+        for (Player each: players) {
+            System.out.println("No." + count + " :" + each.getName() + " has a total of: " + each.getBoardTotal() );
+            count++;
+        }
+
+        bestScore = players[0].getBoardTotal();
+    }
+
     /**
      *  DISPLAY ALL THE SCORE
      *  DETERMINE THE WINNER
      */
     public void determineWinner() {
-        System.out.println("DISPLAYING TOTAL SCORE: ");
-        Player best = players[0]; //DEFAULT CASE
-        for(Player each: players) {
-            System.out.println(each.getName() + " has a total of: " + each.getBoardTotal() );
-            if(best.getBoardTotal() <= each.getBoardTotal()) {
-                best = each;
-            }
-        }
-        System.out.println("That's all! " + best.getName() + " wins the game!");
+
+        makeScoreBoard();
+        System.out.println("The winner is player " + players[0].getName() + " with the total score: " + bestScore);
     }
 
 
