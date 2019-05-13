@@ -373,10 +373,7 @@ public class Qwixx {
                 System.out.println("        \\/                                      \\/ ");
                 System.out.println("");
 
-                //DEBUG
                 rollDice();
-                dices[4].setCurrentSide(6);
-                dices[5].setCurrentSide(6);
 
                 printRolledDice();
                 //ALL PLAYER PLAY WITH WHITE DICES
